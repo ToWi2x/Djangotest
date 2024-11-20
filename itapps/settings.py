@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'G7hL!2n8xR$Bq3Zp')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'your_current_secret_key_value')
 
 WEBSITE_HOSTNAME = os.environ.get('c1016570.mysql.database.azure.com', None)
 
