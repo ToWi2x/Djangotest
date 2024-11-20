@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your_current_secret_key_value')
 
-WEBSITE_HOSTNAME = os.environ.get('c1016570.mysql.database.azure.com', None)
+WEBSITE_HOSTNAME = os.environ.get('WEBSITE_HOSTNAME', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = WEBSITE_HOSTNAME == None
@@ -142,8 +142,9 @@ MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-AZURE_SA_NAME = "dangobase11"
-AZURE_SA_KEY = "+8uV9i4LpsgFnBovQnREdnso8/UL7UxydB15xcWit6g0DaOOnsG2LL+vya9PV0rVntxdMtfrvWU++AStSn9HPQ=="
+AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
+AZURE_SA_KEY = os.environ['AZURE_SA_KEY'] 
+   
 
 STORAGES = {
     "default": {
