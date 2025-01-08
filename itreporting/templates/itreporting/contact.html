@@ -1,0 +1,67 @@
+{% extends 'itreporting/base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <!-- Section 1: Internal Navigation -->
+        <section id="navigation" class="mb-5">
+            <h2>Navigation</h2>
+            <p>Use the links below to quickly jump to different sections of this page:</p>
+            <ul>
+                <li><a href="#contact-form">Contact Form</a></li>
+                <li><a href="#address">University Address</a></li>
+                <li><a href="#support">Support Information</a></li>
+            </ul>
+        </section>
+
+        <!-- Section 2: Contact Form Section -->
+        <section id="contact-form" class="mb-5">
+            <h2>Contact Us</h2>
+            <p>If you have any questions or inquiries, please fill out the form below:</p>
+            
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_name">Your Name</label>
+                            {{ form.name }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_email">Email Address</label>
+                            {{ form.email }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_subject">Subject</label>
+                            {{ form.subject }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_message">Your Message</label>
+                            {{ form.message }}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: University Address Section -->
+        <section id="address" class="mb-5">
+            <h2>Our Address</h2>
+            <p>Springfield University, 1 University Avenue, London, SW1A 1AA, United Kingdom</p>
+        </section>
+
+        <!-- Section 4: Support Information Section -->
+        <section id="support" class="mb-5">
+            <h2>Support Information</h2>
+            <p>If you need further assistance, you can contact our support team at:</p>
+            <ul>
+                <li><strong>Email:</strong> support@springfielduniversity.ac.uk</li>
+                <li><strong>Phone:</strong> +44 20 7946 0958</li>
+            </ul>
+        </section>
+    </div>
+{% endblock %}

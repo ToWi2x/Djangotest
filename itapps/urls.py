@@ -15,20 +15,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path , include
+from django.urls import path, include
 from users import views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.authtoken.views import obtain_auth_token  # Import for token authentication
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('itreporting.urls')),
-    path('register/', views.register, name='register'),
-     path('report/', views.register, name='report'),
+    path('', include('itreporting.urls')),  # Routes for your itreporting app
+    path('register/', views.register, name='register'),  # Registration view
+    path('report/', views.report, name='report'),  # Ensure this points to the correct view
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/',auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('profile/', views.profile, name = 'profile'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('profile/', views.profile, name='profile'),  # User profile 
+
+    # API routes
+    path('api/', include('api.urls')),  # Include the API app's URLs under the /api/ path
+    path('api/auth/', obtain_auth_token, name='api_token_auth'),  # Token authentication endpoint
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+

@@ -1,0 +1,75 @@
+{% extends "itreporting/base.html" %}
+
+{% block title %}Modules - Student IT Services{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Section 1: Title and Introduction -->
+    <section class="mb-5">
+        <h1 class="text-center">All Available Modules</h1>
+        <p class="text-center">Explore and register for the available modules</p>
+    </section>
+
+    <!-- Section 2: Messages -->
+    {% if messages %}
+        <div class="alert-messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Section 3: Modules Listing -->
+    <section class="mb-5">
+        <h2>Available Modules</h2>
+        <p class="lead">Here are the modules you can register for:</p>
+
+        <div class="row">
+            {% for module in modules %}
+                <div class="module col-md-4 mb-4">
+                    <h3>{{ module.name }}</h3>
+                    <p>{{ module.description }}</p>
+                    <p><strong>Availability:</strong>
+                        {% if module.availability %}
+                            <span class="text-success">Open for Registration</span>
+                        {% else %}
+                            <span class="text-danger">Closed for Registration</span>
+                        {% endif %}
+                    </p>
+
+                    <!-- Displaying the courses linked to the module -->
+                    <p><strong>Courses Allowed:</strong>
+                        {% if module.courses_allowed.all %}
+                            <ul>
+                                {% for course in module.courses_allowed.all %}
+                                    <li>{{ course.name }} ({{ course.code }})</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>No courses linked to this module.</span>
+                        {% endif %}
+                    </p>
+
+                    <!-- Registration button -->
+                    {% if module.availability %}
+                        <form method="POST" action="{% url 'itreporting:module_page' module.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">
+                                {% if request.user in module.registered.all %}
+                                    Unregister from this Module
+                                {% else %}
+                                    Register for this Module
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <button class="btn btn-secondary" disabled>
+                            Registration Closed
+                        </button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

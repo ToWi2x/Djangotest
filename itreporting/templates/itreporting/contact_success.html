@@ -1,0 +1,10 @@
+
+{% extends 'itreporting/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Thank You for Your Message!</h1>
+    <p>We have received your inquiry and will get back to you shortly.</p>
+    <a href="{% url 'itreporting:home' %}" class="btn btn-primary">Go Back to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "itreporting/base.html" %}
+
+{% block content %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Navigation Section -->
+    <section id="navigation" class="mb-5">
+        <h2>Navigation</h2>
+        <p>Use the links below to quickly jump to different sections of this page:</p>
+        <ul>
+            <li><a href="#module-list">Available Modules</a></li>
+            <li><a href="#courses-list">Courses and Modules</a></li>
+        </ul>
+    </section>
+
+    <div class="container mt-4">
+        <!-- Page Title -->
+        <h1>Modules</h1>
+
+        <!-- Section 1: Module List Section -->
+        <section id="module-list" class="mb-5">
+            <h2>Available Modules</h2>
+            <p>Here are the available modules:</p>
+
+            <div class="row">
+                {% for module in modules %}
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h2 class="card-title">{{ module.name }} ({{ module.code }})</h2>
+                                <p><strong>Credit:</strong> {{ module.credit }}</p>
+                                <p><strong>Category:</strong> {{ module.category }}</p>
+                                <p><strong>Description:</strong> {{ module.description }}</p>
+                                <p><strong>Availability:</strong> 
+                                    {% if module.availability %}
+                                        <span class="text-success">Open for Registration</span>
+                                    {% else %}
+                                        <span class="text-danger">Closed for Registration</span>
+                                    {% endif %}
+                                </p>
+
+                                <h4>Courses Linked to this Module</h4>
+                                {% if module.courses_allowed.all %}
+                                    <ul>
+                                        {% for course in module.courses_allowed.all %}
+                                            <li>{{ course.name }} ({{ course.code }})</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p>No courses linked to this module.</p>
+                                {% endif %}
+
+                                <!-- Registration/Unregistration Button -->
+                                {% if module.availability %}
+                                    {% if request.user in module.registered.all %}
+                                        <!-- User is already registered for the module -->
+                                        <form method="POST" action="{% url 'itreporting:module_page' module.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">
+                                                Unregister from this Module
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <!-- User is not registered for the module -->
+                                        <form method="POST" action="{% url 'itreporting:module_page' module.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary">
+                                                Register for this Module
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                {% else %}
+                                    <button class="btn btn-secondary" disabled>
+                                        Registration Closed
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+    </div> <!-- End of container div -->
+{% endblock %}

@@ -73,3 +73,6 @@ export AZURE_DB_HOST='c1016570.mysql.database.azure.com'
 export AZURE_DB_PORT='3306'
 export AZURE_DB_USER='c1016570'
 export AZURE_DB_PASSWORD='Majunia199!!'
+
+export AZURE_SA_NAME="dangobase11"
+export AZURE_SA_KEY="+8uV9i4LpsgFnBovQnREdnso8/UL7UxydB15xcWit6g0DaOOnsG2LL+vya9PV0rVntxdMtfrvWU++AStSn9HPQ=="

@@ -1,0 +1,36 @@
+{% extends "itreporting/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Report IT Issue</legend>
+            {{ form|crispy }}
+        </fieldset>
+        
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Submit</button>
+        </div>
+    </form>
+
+    <div class="border-top pt-3">
+        <small class="text-muted">Are you already registered? 
+            <a class="ml-2" href="{% url 'login' %}">Login</a>
+        </small>
+    </div>
+</div>
+{% endblock content %}

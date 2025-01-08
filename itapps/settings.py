@@ -18,6 +18,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -50,6 +53,9 @@ INSTALLED_APPS = [
     'users.apps.USersConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+    'rest_framework',  
+    'api',  
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -67,8 +73,10 @@ ROOT_URLCONF = 'itapps.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [
+            BASE_DIR / 'templates',  # Optional, if you want global templates
+        ],
+        'APP_DIRS': True,  # This will automatically search app directories for templates
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -79,6 +87,11 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
+
+
 
 WSGI_APPLICATION = 'itapps.wsgi.application'
 
@@ -140,10 +153,23 @@ MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+import os
 
-AZURE_SA_NAME = os.environ['AZURE_SA_NAME']
-AZURE_SA_KEY = os.environ['AZURE_SA_KEY'] 
-   
+# Safely fetch environment variables using .get() method
+AZURE_SA_NAME = os.environ.get('AZURE_SA_NAME', None)
+AZURE_SA_KEY = os.environ.get('AZURE_SA_KEY', None)
+
+# Print the values if available
+if AZURE_SA_NAME and AZURE_SA_KEY:
+    print(AZURE_SA_NAME)
+    print(AZURE_SA_KEY) 
+else:
+    print("Error: One or more environment variables are not set.")
+
+AZURE_SA_NAME="dangobase11"
+AZURE_SA_KEY="+8uV9i4LpsgFnBovQnREdnso8/UL7UxydB15xcWit6g0DaOOnsG2LL+vya9PV0rVntxdMtfrvWU++AStSn9HPQ=="
+
+
 
 STORAGES = {
     "default": {
@@ -164,8 +190,34 @@ STORAGES = {
     },
 }
 
-STATIC_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/static/'
-MEDIA_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/media/'
 
 
+#STATIC_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/static/'
+#MEDIA_URL = f'https://{AZURE_SA_NAME}.blob.core.windows.net/media/'
 
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'  # or 'bootstrap5', depending on your project
+
+LOGOUT_REDIRECT_URL = '/login/'  # Redirects to the login page
+
+LOGIN_REDIRECT_URL = 'profile'  # Redirect to the profile page after login
+
+LOGIN_URL = 'login'  # Redirect users to the login page if they are not authenticated
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# settings.py
+
+CONTACT_EMAIL = 'c1016570@hallam.shu.ac.uk'  #personal email
+
+
+# settings.py for development
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This will print emails to the console
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Ensures token-based authentication
+    ],
+}

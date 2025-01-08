@@ -1,0 +1,44 @@
+{% extends "itreporting/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Course Title Section -->
+    <section class="mb-5 p-4 bg-light rounded shadow">
+        <h1 class="text-dark text-center">{{ course.name }}</h1>
+        <h4 class="text-muted text-center">{{ course.code }}</h4>
+        <p class="text-muted text-center">{{ course.description }}</p>
+    </section>
+
+    <!-- Modules Section -->
+    <section class="mb-5 p-4 bg-light rounded shadow">
+        <h2 class="text-dark">Modules for {{ course.name }}</h2>
+        <div class="row">
+            {% for module in modules %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark">{{ module.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ module.code }}</h6>
+                        <p class="card-text text-muted">{{ module.description|truncatewords:15 }}</p>
+                        <p class="card-text text-muted">
+                            <strong>Credits:</strong> {{ module.credit }}
+                        </p>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="module_id" value="{{ module.id }}">
+                            {% if module.id in registered_module_ids %}
+                            <button type="submit" name="action" value="unregister" class="btn btn-danger">Unregister</button>
+                            {% else %}
+                            <button type="submit" name="action" value="register" class="btn btn-success">Register</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No modules available for this course.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}
